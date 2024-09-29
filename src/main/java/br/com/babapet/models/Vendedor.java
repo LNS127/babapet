@@ -1,6 +1,5 @@
 package br.com.babapet.models;
 
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -14,18 +13,15 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "Prestador de Serviço")
-public class Prestador {
+@Table(name = "Vendedores")
+public class Vendedor {
     @Id
     private String cpf;
-    private String rg;
+    private String cnpj;
     private String nome;
     private String email;
-    @Embedded
-    private Endereco endereco;
     private String telefone;
-    private String dataDeNascimento;
-    private String biometria;
+    private String descricaoDaLoja;
+    private String Status;
 
 }
-
