@@ -1,0 +1,7 @@
+package br.com.babapet.repositories;
+
+import br.com.babapet.models.Venda;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface VendaRepository extends JpaRepository<Venda, Long> {
+}
