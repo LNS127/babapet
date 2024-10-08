@@ -1,13 +1,12 @@
 package br.com.babapet.models;
 
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -19,10 +18,12 @@ public class Cliente {
     private String cpf;
     private String rg;
     private String nome;
+    @Column(unique = true)
     private String email;
     @Embedded
     private Endereco endereco;
-    private String telefone;
+    @Column(unique = true)
+    private List<String> telefone;
     private String dataDeNascimento;
 
 }
