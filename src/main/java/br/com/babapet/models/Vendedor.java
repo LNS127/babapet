@@ -22,6 +22,6 @@ public class Vendedor {
     private String email;
     private String telefone;
     private String descricaoDaLoja;
-    private String Status;
+    private Boolean Status;
 
 }

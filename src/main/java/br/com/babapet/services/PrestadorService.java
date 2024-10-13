@@ -70,7 +70,10 @@ public class PrestadorService {
         if (!prestadorExistente.isPresent()) {
             throw new RuntimeException("Prestador com este CPF não existe.");
         }
-        prestadorRepository.deleteById(cpf);
+        Prestador prestador = prestadorExistente.get();
+        prestador.setStatus(false);
+        prestadorRepository.save(prestador);
+
     }
 
     // Método para validar o formato do CPF

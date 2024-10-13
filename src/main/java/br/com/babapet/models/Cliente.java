@@ -17,6 +17,7 @@ public class Cliente {
     @Id
     private String cpf;
     private String rg;
+    private String orgaoEmissorRg;
     private String nome;
     @Column(unique = true)
     private String email;
@@ -25,5 +26,6 @@ public class Cliente {
     @Column(unique = true)
     private List<String> telefone;
     private String dataDeNascimento;
+    private Boolean status;
 
 }

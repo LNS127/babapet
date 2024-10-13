@@ -70,7 +70,9 @@ public class ClienteService {
         if (!clienteExistente.isPresent()) {
             throw new RuntimeException("Cliente com este CPF não existe.");
         }
-        clienteRepository.deleteById(cpf);
+        Cliente cliente = clienteExistente.get();
+        cliente.setStatus(false); // Definindo o status como falso
+        clienteRepository.save(cliente);
     }
 
     // Método para validar o formato do CPF

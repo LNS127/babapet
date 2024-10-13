@@ -19,13 +19,16 @@ public class Prestador {
     @Id
     private String cpf;
     private String rg;
+    private String orgaoEmissorRg;
     private String nome;
     private String email;
     @Embedded
     private Endereco endereco;
     private String telefone;
     private String dataDeNascimento;
-    private String biometria;
+    private Boolean Status;
+    private String imagemRg;
+    private String comprovanteDeResidencia;
 
 }
 

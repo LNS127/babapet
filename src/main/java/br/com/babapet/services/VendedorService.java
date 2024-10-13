@@ -79,9 +79,6 @@ public class VendedorService {
         if (vendedor.getDescricaoDaLoja() == null || vendedor.getDescricaoDaLoja().isEmpty()) {
             throw new RuntimeException("Descrição da loja é obrigatória.");
         }
-        if (vendedor.getStatus() == null || vendedor.getStatus().isEmpty()) {
-            throw new RuntimeException("Status do vendedor é obrigatório.");
-        }
     }
 }
 

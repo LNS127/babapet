@@ -15,8 +15,12 @@ import lombok.Setter;
 public class Pet {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private Long id;
+
+    @Column(columnDefinition = "varchar(255) default 'indefinido'")
     private String raca;
+    private Long id;
     private String nome;
     private String sexo;
+    private String tipo;
+
 }
