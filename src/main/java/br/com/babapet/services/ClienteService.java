@@ -1,6 +1,6 @@
 package br.com.babapet.services;
 
-import br.com.babapet.models.Cliente;
+import br.com.babapet.models.Cliente.Cliente;
 import br.com.babapet.repositories.ClienteRepository;
 import org.springframework.stereotype.Service;
 

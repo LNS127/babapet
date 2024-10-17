@@ -1,4 +1,4 @@
-package br.com.babapet.models;
+package br.com.babapet.models.Pet;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

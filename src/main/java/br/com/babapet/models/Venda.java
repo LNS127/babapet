@@ -1,5 +1,6 @@
 package br.com.babapet.models;
 
+import br.com.babapet.models.Cliente.Cliente;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

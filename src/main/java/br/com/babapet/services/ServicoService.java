@@ -42,11 +42,10 @@ public class ServicoService {
     // Atualizar Serviço
     public Servico atualizarServico(Long id, Servico servicoAtualizado) {
         Optional<Servico> servicoExistente = servicoRepository.findById(String.valueOf(id));
-        if (!servicoExistente.isPresent()) {
+        if (servicoExistente.isEmpty()) {
             throw new RuntimeException("Serviço com este ID não encontrado.");
         }
         validarDadosServico(servicoAtualizado); // Validação adicional dos dados
-        servicoAtualizado.setId(String.valueOf(id)); // Garantir que o ID do serviço atualizado é o mesmo
         return servicoRepository.save(servicoAtualizado);
     }
 

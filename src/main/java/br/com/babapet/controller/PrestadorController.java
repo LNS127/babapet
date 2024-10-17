@@ -1,6 +1,6 @@
 package br.com.babapet.controller;
 
-import br.com.babapet.models.Prestador;
+import br.com.babapet.models.Prestador.Prestador;
 import br.com.babapet.repositories.PrestadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

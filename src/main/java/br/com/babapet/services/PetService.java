@@ -1,6 +1,6 @@
 package br.com.babapet.services;
 
-import br.com.babapet.models.Pet;
+import br.com.babapet.models.Pet.Pet;
 import br.com.babapet.repositories.PetRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
