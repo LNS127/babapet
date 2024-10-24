@@ -11,16 +11,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name = "Pets")
+@Table(name = "pets") // Tabela em minúsculas, plural
 public class Pet {
+
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // Definindo id como chave primária
 
     @Column(columnDefinition = "varchar(255) default 'indefinido'")
-    private String raca;
-    private Long id;
+    private String raca; // Raca não é mais a chave primária
+
     private String nome;
     private String sexo;
     private String tipo;
-
 }

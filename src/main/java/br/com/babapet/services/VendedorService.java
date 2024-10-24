@@ -24,9 +24,9 @@ public class VendedorService {
         return vendedores;
     }
 
-    // Buscar Vendedor por ID
-    public Optional<Vendedor> buscarVendedorPorId(Long id) {
-        Optional<Vendedor> vendedor = vendedorRepository.findById(id);
+    // Buscar Vendedor por CPF (ID)
+    public Optional<Vendedor> buscarVendedorPorId(String cpf) {
+        Optional<Vendedor> vendedor = vendedorRepository.findById(cpf);
         if (!vendedor.isPresent()) {
             throw new RuntimeException("Vendedor não encontrado.");
         }
@@ -40,23 +40,23 @@ public class VendedorService {
     }
 
     // Atualizar Vendedor
-    public Vendedor atualizarVendedor(Long id, Vendedor vendedorAtualizado) {
-        Optional<Vendedor> vendedorExistente = vendedorRepository.findById(vendedorAtualizado.getCpf());
+    public Vendedor atualizarVendedor(String cpf, Vendedor vendedorAtualizado) {
+        Optional<Vendedor> vendedorExistente = vendedorRepository.findById(cpf);
         if (!vendedorExistente.isPresent()) {
-            throw new RuntimeException("Vendedor com este ID não encontrado.");
+            throw new RuntimeException("Vendedor com este CPF não encontrado.");
         }
         validarDadosVendedor(vendedorAtualizado); // Validação adicional dos dados
-        vendedorAtualizado.setCpf(vendedorAtualizado.getCpf()); // Garantir que o ID do vendedor atualizado é o mesmo
+        vendedorAtualizado.setCpf(cpf); // Garantir que o CPF não é alterado
         return vendedorRepository.save(vendedorAtualizado);
     }
 
     // Deletar Vendedor
-    public void deletarVendedor(Long id) {
-        Optional<Vendedor> vendedorExistente = vendedorRepository.findById(String.valueOf(id));
+    public void deletarVendedor(String cpf) {
+        Optional<Vendedor> vendedorExistente = vendedorRepository.findById(cpf);
         if (!vendedorExistente.isPresent()) {
-            throw new RuntimeException("Vendedor com este ID não existe.");
+            throw new RuntimeException("Vendedor com este CPF não existe.");
         }
-        vendedorRepository.deleteById(String.valueOf(id));
+        vendedorRepository.deleteById(cpf);
     }
 
     // Método para validar dados do vendedor
@@ -81,4 +81,3 @@ public class VendedorService {
         }
     }
 }
-
