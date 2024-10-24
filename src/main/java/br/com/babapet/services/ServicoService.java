@@ -41,7 +41,7 @@ public class ServicoService {
 
     // Atualizar Serviço
     public Servico atualizarServico(Long id, Servico servicoAtualizado) {
-        Optional<Servico> servicoExistente = servicoRepository.findById(String.valueOf(id));
+        Optional<Servico> servicoExistente = servicoRepository.findById(id);
         if (servicoExistente.isEmpty()) {
             throw new RuntimeException("Serviço com este ID não encontrado.");
         }
@@ -51,11 +51,11 @@ public class ServicoService {
 
     // Deletar Serviço
     public void deletarServico(Long id) {
-        Optional<Servico> servicoExistente = servicoRepository.findById(String.valueOf(id));
+        Optional<Servico> servicoExistente = servicoRepository.findById(id);
         if (!servicoExistente.isPresent()) {
             throw new RuntimeException("Serviço com este ID não existe.");
         }
-        servicoRepository.deleteById(String.valueOf(id));
+        servicoRepository.deleteById(id);
     }
 
     // Método para validar dados do serviço

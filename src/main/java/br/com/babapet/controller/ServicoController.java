@@ -45,7 +45,6 @@ public class ServicoController {
         if (!servicoRepository.existsById(id)) {
             throw new RuntimeException("Serviço com este ID não encontrado.");
         }
-        validarDadosServico(servicoAtualizado); // Validação adicional dos dados
         servicoAtualizado.setId(id); // Definindo o ID do serviço atualizado
         return servicoRepository.save(servicoAtualizado);
     }
@@ -57,7 +56,7 @@ public class ServicoController {
         if (!servicoRepository.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        servicoRepository.deleteById(id));
+        servicoRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
