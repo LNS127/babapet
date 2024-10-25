@@ -1,6 +1,6 @@
 package br.com.babapet.controllers;
 
-import br.com.babapet.models.Venda;
+import br.com.babapet.models.Venda.Venda;
 import br.com.babapet.repositories.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

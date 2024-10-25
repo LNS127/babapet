@@ -1,5 +1,6 @@
-package br.com.babapet.models;
+package br.com.babapet.models.Vendedor;
 
+import br.com.babapet.models.Endereco;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
@@ -21,6 +22,7 @@ public class Vendedor {
     private String nome;
     private String email;
     private String telefone;
+    private Endereco endereco;
     private String descricaoDaLoja;
     private Boolean Status;
 

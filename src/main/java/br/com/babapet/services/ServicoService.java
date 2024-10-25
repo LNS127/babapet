@@ -1,6 +1,6 @@
 package br.com.babapet.services;
 
-import br.com.babapet.models.Servico;
+import br.com.babapet.models.servico.Servico;
 import br.com.babapet.repositories.ServicoRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ServicoService {
 
     // Método para validar dados do serviço
     private void validarDadosServico(Servico servico) {
-        if (servico.getTipo() == null || servico.getTipo().isEmpty()) {
+        if (servico.getTipoDeServico() == null || servico.getTipoDeServico().isEmpty()) {
             throw new RuntimeException("Tipo do serviço é obrigatório.");
         }
         if (servico.getDescricao() == null || servico.getDescricao().isEmpty()) {

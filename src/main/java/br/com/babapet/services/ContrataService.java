@@ -1,6 +1,6 @@
 package br.com.babapet.services;
 
-import br.com.babapet.models.Contrata;
+import br.com.babapet.models.Contrata.Contrata;
 import br.com.babapet.repositories.*;
 import org.springframework.stereotype.Service;
 import java.util.List;

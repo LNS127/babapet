@@ -1,4 +1,4 @@
-package br.com.babapet.models;
+package br.com.babapet.models.produto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -17,6 +17,7 @@ import lombok.Setter;
 public class Produto {
     @Id
     private String codigoDeBarras;
+    private String nome;
     private double valor;
     private String tipo;
     private String descricao;

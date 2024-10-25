@@ -1,4 +1,4 @@
-package br.com.babapet.models;
+package br.com.babapet.models.servico;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,9 +15,7 @@ public class Servico {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String tipo;
+    private String tipoDeServico;
     private String descricao;
     private double valor;
-
-
 }

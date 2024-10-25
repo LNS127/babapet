@@ -1,6 +1,6 @@
 package br.com.babapet.services;
 
-import br.com.babapet.models.Venda;
+import br.com.babapet.models.Venda.Venda;
 import br.com.babapet.repositories.ClienteRepository;
 import br.com.babapet.repositories.ProdutoRepository;
 import br.com.babapet.repositories.VendaRepository;

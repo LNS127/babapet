@@ -10,9 +10,10 @@ public record PrestadorRequest(String cpf,
                                String telefone,
                                Endereco endereco,
                                String dataDeNascimento,
+                               boolean status,
                                String imagemRg,
-                               String comprovanteDeResidencia,
-                               boolean status) {
+                               String comprovanteDeResidencia) {
+
     public Prestador toPrestador() {
         return new Prestador(this.cpf,
                 this.rg,
@@ -21,7 +22,8 @@ public record PrestadorRequest(String cpf,
                 this.email,
                 this.endereco,
                 this.telefone,
-                this.dataDeNascimento, true,
+                this.dataDeNascimento,
+                true,
                 this.imagemRg,
                 this.comprovanteDeResidencia);
     }

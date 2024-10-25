@@ -27,6 +27,6 @@ public class Cliente {
     @Column(unique = true)
     private List<String> telefone;
     private String dataDeNascimento;
-    private Boolean status;
+    private boolean status;
 
 }

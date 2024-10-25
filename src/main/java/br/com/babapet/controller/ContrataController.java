@@ -1,6 +1,6 @@
 package br.com.babapet.controller;
 
-import br.com.babapet.models.Contrata;
+import br.com.babapet.models.Contrata.Contrata;
 import br.com.babapet.repositories.ContrataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
