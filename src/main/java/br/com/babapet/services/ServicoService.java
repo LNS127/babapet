@@ -69,5 +69,13 @@ public class ServicoService {
 
 
     }
+
+    public boolean existsById(Long id) {
+        Optional<Servico> servico = servicoRepository.findById(id);
+        if (!servico.isPresent()) {
+            return false;
+        }
+        return true;
+    }
 }
 

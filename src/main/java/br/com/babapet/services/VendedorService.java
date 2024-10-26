@@ -80,4 +80,12 @@ public class VendedorService {
             throw new RuntimeException("Descrição da loja é obrigatória.");
         }
     }
+
+    public boolean existsById(String cpf) {
+        if (vendedorRepository.existsById(cpf)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

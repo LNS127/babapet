@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Service
 public class ClienteService {
+
     private final ClienteRepository clienteRepository;
 
     public ClienteService(ClienteRepository clienteRepository) {
@@ -19,74 +20,68 @@ public class ClienteService {
     public List<Cliente> listarCliente() {
         List<Cliente> clientes = clienteRepository.findAll();
         if (clientes.isEmpty()) {
-            throw new RuntimeException("Nenhum cliente encontrado.");
+            throw new IllegalStateException("Nenhum cliente encontrado.");
         }
         return clientes;
     }
 
     // Buscar Cliente por CPF
-    public Optional<Cliente> buscarClientePorCpf(String cpf) {
-        if (!validarCpf(cpf)) {
-            throw new RuntimeException("CPF inválido.");
-        }
-        Optional<Cliente> cliente = clienteRepository.findById(cpf);
-        if (!cliente.isPresent()) {
-            throw new RuntimeException("Cliente não encontrado.");
-        }
-        return cliente;
+    public Cliente buscarClientePorCpf(String cpf) {
+        validarCpf(cpf);
+        return clienteRepository.findById(cpf)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado."));
     }
 
     // Criar Cliente
     public Cliente criarCliente(Cliente cliente) {
-        if (!validarCpf(cliente.getCpf())) {
-            throw new RuntimeException("CPF inválido.");
+        validarCpf(cliente.getCpf());
+
+        if (clienteRepository.existsById(cliente.getCpf())) {
+            throw new IllegalStateException("Cliente com este CPF já está cadastrado.");
         }
-        if (clienteRepository.findById(cliente.getCpf()).isPresent()) {
-            throw new RuntimeException("Cliente com este CPF já está cadastrado.");
-        }
-        validarDadosCliente(cliente); // Validação adicional dos dados
+
+        validarDadosCliente(cliente);
         return clienteRepository.save(cliente);
     }
 
     // Atualizar Cliente
-    public Cliente atualizarCliente(String cpf, Cliente clienteAtualizado) {
-        if (!validarCpf(cpf)) {
-            throw new RuntimeException("CPF inválido.");
-        }
-        Optional<Cliente> clienteExistente = clienteRepository.findById(cpf);
-        if (!clienteExistente.isPresent()) {
-            throw new RuntimeException("Cliente com este CPF não encontrado.");
-        }
-        validarDadosCliente(clienteAtualizado); // Validação adicional dos dados
+    public Cliente atualizarCliente(Cliente clienteAtualizado) {
+        validarCpf(clienteAtualizado.getCpf());
+
+        Cliente clienteExistente = clienteRepository.findById(clienteAtualizado.getCpf())
+                .orElseThrow(() -> new IllegalArgumentException("Cliente com este CPF não encontrado."));
+
+        validarDadosCliente(clienteAtualizado);
+        clienteAtualizado.setCpf(clienteExistente.getCpf()); // Mantém o CPF consistente
         return clienteRepository.save(clienteAtualizado);
     }
 
-    // Deletar Cliente
-    public void deletarCliente(String cpf) {
-        if (!validarCpf(cpf)) {
-            throw new RuntimeException("CPF inválido.");
-        }
-        Optional<Cliente> clienteExistente = clienteRepository.findById(cpf);
-        if (!clienteExistente.isPresent()) {
-            throw new RuntimeException("Cliente com este CPF não existe.");
-        }
-        Cliente cliente = clienteExistente.get();
-        cliente.setStatus(false); // Definindo o status como falso
-        clienteRepository.save(cliente);
+    // Inativar Cliente (Exclusão Lógica)
+    public Cliente inativarCliente(String cpf) {
+        validarCpf(cpf);
+        Cliente cliente = clienteRepository.findById(cpf)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente com este CPF não existe."));
+        cliente.setStatus(false); // Definindo o status como inativo
+        return clienteRepository.save(cliente);
+    }
+
+    // Verificar se Cliente existe por CPF
+    public boolean existsByCpf(String cpf) {
+        validarCpf(cpf);
+        return clienteRepository.existsById(cpf);
     }
 
     // Método para validar o formato do CPF
-    private boolean validarCpf(String cpf) {
-        return cpf != null && cpf.matches("\\d{11}");
+    private void validarCpf(String cpf) {
+        if (cpf == null || !cpf.matches("\\d{11}")) {
+            throw new IllegalArgumentException("CPF inválido.");
+        }
     }
 
     // Método para validar dados do cliente
     private void validarDadosCliente(Cliente cliente) {
         if (cliente.getNome() == null || cliente.getNome().isEmpty()) {
-            throw new RuntimeException("Nome do cliente é obrigatório.");
+            throw new IllegalArgumentException("Nome do cliente é obrigatório.");
         }
-
     }
-
 }
-

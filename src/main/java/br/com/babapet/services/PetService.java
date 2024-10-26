@@ -72,4 +72,11 @@ public class PetService {
         }
 
     }
+
+    public boolean existsById(Long id) {
+        Optional<Pet> pet = petRepository.findById(id);
+        if (!pet.isPresent()) {
+            return false;
+        }
+        return true;}
 }
