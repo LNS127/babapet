@@ -74,5 +74,12 @@ public class VendaService {
         vendaRepository.deleteById(id);
     }
 
-   
+
+    public boolean existsById(Long id) {
+        Optional<Venda> venda = vendaRepository.findById(id);
+        if (!venda.isPresent()) {
+            return false;
+        }
+        return true;
+    }
 }

@@ -2,6 +2,7 @@ package br.com.babapet.controller;
 
 import br.com.babapet.models.servico.Servico;
 import br.com.babapet.repositories.ServicoRepository;
+import br.com.babapet.services.ServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,47 +17,47 @@ import static java.lang.Long.valueOf;
 public class ServicoController {
 
     @Autowired
-    private ServicoRepository servicoRepository;
+    private ServicoService servicoService;
 
     // Criar um novo serviço
     @PostMapping
     public ResponseEntity<Servico> criarServico(@RequestBody Servico servico) {
-        Servico novoServico = servicoRepository.save(servico);
+        Servico novoServico = servicoService.criarServico(servico);
         return ResponseEntity.ok(novoServico);
     }
 
     // Listar todos os serviços
     @GetMapping
     public ResponseEntity<List<Servico>> listarServicos() {
-        List<Servico> servicos = servicoRepository.findAll();
+        List<Servico> servicos = servicoService.listarServicos();
         return ResponseEntity.ok(servicos);
     }
 
     // Buscar um serviço por ID
     @GetMapping("/{id}")
     public ResponseEntity<Servico> buscarServico(@PathVariable Long id) {
-        Optional<Servico> servico = servicoRepository.findById(id);
+        Optional<Servico> servico = servicoService.buscarServicoPorId(id);
         return servico.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Atualizar um serviço
     @PutMapping("/{id}")
     public Servico atualizarServico(Long id, Servico servicoAtualizado) {
-        if (!servicoRepository.existsById(id)) {
+        if (!servicoService.existsById(id)) {
             throw new RuntimeException("Serviço com este ID não encontrado.");
         }
         servicoAtualizado.setId(id); // Definindo o ID do serviço atualizado
-        return servicoRepository.save(servicoAtualizado);
+        return servicoService.atualizarServico(id, servicoAtualizado);
     }
 
 
     // Deletar um serviço
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarServico(@PathVariable Long id) {
-        if (!servicoRepository.existsById(id)) {
+        if (!servicoService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        servicoRepository.deleteById(id);
+        servicoService.deletarServico(id);
         return ResponseEntity.noContent().build();
     }
 }

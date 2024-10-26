@@ -2,6 +2,7 @@ package br.com.babapet.controller;
 
 import br.com.babapet.models.Contrata.Contrata;
 import br.com.babapet.repositories.ContrataRepository;
+import br.com.babapet.services.ContrataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,26 +15,26 @@ import java.util.Optional;
 public class ContrataController {
 
     @Autowired
-    private ContrataRepository contrataRepository;
+    private ContrataService contrataService;
 
     // Criar uma nova contratação
     @PostMapping
-    public ResponseEntity<Contrata> criarContrata(@RequestBody Contrata contrata) {
-        Contrata novaContrata = contrataRepository.save(contrata);
-        return ResponseEntity.ok(novaContrata);
+    public ResponseEntity<Contrata> criarContratacao(@RequestBody Contrata contrata) {
+        Contrata novaContratacao = contrataService.criarContrato(contrata);
+        return ResponseEntity.ok(novaContratacao);
     }
 
     // Listar todas as contratações
     @GetMapping
     public ResponseEntity<List<Contrata>> listarContratas() {
-        List<Contrata> contratas = contrataRepository.findAll();
+        List<Contrata> contratas = contrataService.listarContratos();
         return ResponseEntity.ok(contratas);
     }
 
     // Buscar uma contratação por ID
     @GetMapping("/{id}")
     public ResponseEntity<Contrata> buscarContrata(@PathVariable Long id) {
-        Optional<Contrata> contrata = contrataRepository.findById(id);
+        Optional<Contrata> contrata = contrataService.buscarContratoPorId(id);
         return contrata.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

@@ -11,7 +11,7 @@ public record ClienteRequest(String cpf,
                              Endereco endereco,
                              List<String> telefone,
                              String dataDeNascimento) {
-    public Cliente tocliente() {
+    public Cliente toCliente() {
         return new Cliente(this.cpf, this.rg, this.orgaoEmissorRg, this.nome, this.email,this.endereco, this.telefone, this.dataDeNascimento, true);
     }
 }

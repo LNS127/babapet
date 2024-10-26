@@ -104,4 +104,11 @@ public class PrestadorService {
     private boolean validarEmail(String email) {
         return email != null && email.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$");
     }
+
+    public boolean existsById(String cpf) {
+        if (!validarCpf(cpf)) {
+            throw new RuntimeException("CPF inválido.");
+        }
+        return prestadorRepository.existsById(cpf);
+    }
 }
