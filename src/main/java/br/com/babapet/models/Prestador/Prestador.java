@@ -1,5 +1,6 @@
 package br.com.babapet.models.Prestador;
 
+import br.com.babapet.models.Avaliavel;
 import br.com.babapet.models.Endereco;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -15,8 +16,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Table(name = "Prestador de Serviço")
-public class Prestador {
+@Table(name = "prestadores")
+public class Prestador extends Avaliavel {
     @Id
     private String cpf;
     private String rg;

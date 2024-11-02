@@ -1,6 +1,8 @@
 package br.com.babapet.controller;
 
 import br.com.babapet.models.servico.Servico;
+import br.com.babapet.models.servico.ServicoRequest;
+import br.com.babapet.models.servico.ServicoResponse;
 import br.com.babapet.repositories.ServicoRepository;
 import br.com.babapet.services.ServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,42 +23,37 @@ public class ServicoController {
 
     // Criar um novo serviço
     @PostMapping
-    public ResponseEntity<Servico> criarServico(@RequestBody Servico servico) {
-        Servico novoServico = servicoService.criarServico(servico);
-        return ResponseEntity.ok(novoServico);
+    public ResponseEntity<ServicoResponse> criarServico(@RequestBody ServicoRequest servico) {
+        Servico novoServico = servicoService.criarServico(servico.toServico());
+        return ResponseEntity.ok(new ServicoResponse(novoServico));
     }
-
     // Listar todos os serviços
     @GetMapping
-    public ResponseEntity<List<Servico>> listarServicos() {
+    public ResponseEntity<List<ServicoResponse>> listarServicos() {
         List<Servico> servicos = servicoService.listarServicos();
-        return ResponseEntity.ok(servicos);
+        List<ServicoResponse> servicosResponse = servicos.stream().map(ServicoResponse::new).toList();
+        return ResponseEntity.ok(servicosResponse);
     }
-
     // Buscar um serviço por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Servico> buscarServico(@PathVariable Long id) {
+    public ResponseEntity<ServicoResponse> buscarServico(@PathVariable Long id) {
         Optional<Servico> servico = servicoService.buscarServicoPorId(id);
-        return servico.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return servico.map(servicoResponse -> ResponseEntity.ok(new ServicoResponse(servicoResponse))).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
     // Atualizar um serviço
     @PutMapping("/{id}")
     public Servico atualizarServico(Long id, Servico servicoAtualizado) {
-        if (!servicoService.existsById(id)) {
-            throw new RuntimeException("Serviço com este ID não encontrado.");
+       Optional<Servico> servico = servicoService.buscarServicoPorId(id);
+        if (servico.isEmpty()) {
+            throw new RuntimeException("Serviço com este ID nao encontrado.");
         }
-        servicoAtualizado.setId(id); // Definindo o ID do serviço atualizado
         return servicoService.atualizarServico(id, servicoAtualizado);
     }
 
 
     // Deletar um serviço
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletarServico(@PathVariable Long id) {
-        if (!servicoService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ServicoResponse> deletarServico(@PathVariable Long id) {
         servicoService.deletarServico(id);
         return ResponseEntity.noContent().build();
     }

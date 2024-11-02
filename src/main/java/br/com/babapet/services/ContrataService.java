@@ -65,7 +65,7 @@ public class ContrataService {
     // Deletar Contrato
     public void deletarContrato(Long id) {
         Optional<Contrata> contratoExistente = contrataRepository.findById(id);
-        if (!contratoExistente.isPresent()) {
+        if (contratoExistente.isEmpty()) {
             throw new RuntimeException("Contrato com este ID não existe.");
         }
         contrataRepository.deleteById(id);
