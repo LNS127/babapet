@@ -1,6 +1,10 @@
 package br.com.babapet.controller;
 
+import br.com.babapet.models.Cliente.Cliente;
+import br.com.babapet.models.Cliente.ClienteResponse;
 import br.com.babapet.models.Vendedor.Vendedor;
+import br.com.babapet.models.Vendedor.VendedorRequest;
+import br.com.babapet.models.Vendedor.VendedorResponse;
 import br.com.babapet.repositories.VendedorRepository;
 import br.com.babapet.services.VendedorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,46 +23,37 @@ public class VendedorController {
 
     // Criar um novo vendedor
     @PostMapping
-    public ResponseEntity<Vendedor> criarVendedor(@RequestBody Vendedor vendedor) {
-        Vendedor novoVendedor = vendedorService.criarVendedor(vendedor);
-        return ResponseEntity.ok(novoVendedor);
+    public ResponseEntity<VendedorResponse> criarVendedor(@RequestBody VendedorRequest vendedor) {
+        Vendedor novoVendedor = vendedorService.criarVendedor(vendedor.toVendedor());
+        return ResponseEntity.ok(new VendedorResponse(novoVendedor));
     }
 
     // Listar todos os vendedores
     @GetMapping
-    public ResponseEntity<List<Vendedor>> listarVendedores() {
+    public ResponseEntity<List<VendedorResponse>> listarVendedores() {
         List<Vendedor> vendedores = vendedorService.listarVendedores();
-        return ResponseEntity.ok(vendedores);
+        List<VendedorResponse> vendedoresResponse = vendedores.stream().map(VendedorResponse::new).toList();
+        return ResponseEntity.ok(vendedoresResponse);
     }
-
     // Buscar um vendedor por CPF
     @GetMapping("/{cpf}")
-    public ResponseEntity<Vendedor> buscarVendedor(@PathVariable String cpf) {
+    public ResponseEntity<VendedorResponse> buscarVendedor(@PathVariable String cpf) {
         Optional<Vendedor> vendedor = vendedorService.buscarVendedorPorId(cpf);
-        return vendedor.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return vendedor.map(value -> ResponseEntity.ok(new VendedorResponse(value))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Atualizar um vendedor
     @PutMapping("/{cpf}")
-    public ResponseEntity<Vendedor> atualizarVendedor(@PathVariable String cpf, @RequestBody Vendedor vendedorAtualizado) {
-        if (!vendedorService.existsById(cpf)) {
-            return ResponseEntity.notFound().build();
-        }
-        vendedorAtualizado.setCpf(cpf);
-        Vendedor vendedorSalvo = vendedorService.atualizarVendedor(cpf, vendedorAtualizado);
-        return ResponseEntity.ok(vendedorSalvo);
+    public ResponseEntity<VendedorResponse> atualizarVendedor(@PathVariable String cpf, @RequestBody VendedorRequest vendedorAtualizado) {
+        Vendedor vendedorSalvo = vendedorService.atualizarVendedor(cpf, vendedorAtualizado.toVendedor());
+        return ResponseEntity.ok(new VendedorResponse(vendedorSalvo));
     }
 
     // Inativar um vendedor (definir status como falso)
     @PatchMapping("/{cpf}/inativar")
-    public ResponseEntity<Vendedor> inativarVendedor(@PathVariable String cpf) {
-        Optional<Vendedor> vendedorExistente = vendedorService.buscarVendedorPorId(cpf);
-        if (!vendedorExistente.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        Vendedor vendedor = vendedorExistente.get();
-        vendedor.setStatus(false);
-        vendedorService.atualizarVendedor(cpf, vendedor);
-        return ResponseEntity.ok(vendedor);
+    public ResponseEntity<VendedorResponse> inativarVendedor(@PathVariable String cpf) {
+        Vendedor VendedorInativado = vendedorService.inativarVendedor(cpf);
+        return ResponseEntity.ok(new VendedorResponse(VendedorInativado));
     }
-}
+    }
+

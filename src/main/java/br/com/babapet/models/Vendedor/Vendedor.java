@@ -24,6 +24,6 @@ public class Vendedor {
     private String telefone;
     private Endereco endereco;
     private String descricaoDaLoja;
-    private Boolean Status;
+    private boolean Status;
 
 }

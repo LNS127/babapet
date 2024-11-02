@@ -1,6 +1,8 @@
 package br.com.babapet.controller;
 
+import br.com.babapet.models.Cliente.Cliente;
 import br.com.babapet.models.Prestador.Prestador;
+import br.com.babapet.models.Prestador.PrestadorResponse;
 import br.com.babapet.repositories.PrestadorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -48,16 +50,14 @@ public class PrestadorController {
         return ResponseEntity.ok(prestadorSalvo);
     }
 
-    // Inativar um prestador (definir status como falso)
+    // Inativar um prestador
     @PatchMapping("/{cpf}/inativar")
-    public ResponseEntity<Prestador> inativarPrestador(@PathVariable String cpf) {
+    public ResponseEntity<PrestadorResponse> inativarPrestador(@PathVariable String cpf) {
         Optional<Prestador> prestadorExistente = prestadorRepository.findById(cpf);
-        if (!prestadorExistente.isPresent()) {
+        if (prestadorExistente.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        Prestador prestador = prestadorExistente.get();
-        prestador.setStatus(false);
-        prestadorRepository.save(prestador);
-        return ResponseEntity.ok(prestador);
+        Prestador prestadorInativado = prestadorExistente.get();
+        return ResponseEntity.ok(new PrestadorResponse(prestadorInativado));
     }
 }

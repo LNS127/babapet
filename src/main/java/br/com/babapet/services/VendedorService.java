@@ -1,5 +1,6 @@
 package br.com.babapet.services;
 
+import br.com.babapet.models.Cliente.Cliente;
 import br.com.babapet.models.Vendedor.Vendedor;
 import br.com.babapet.repositories.VendedorRepository;
 import org.springframework.stereotype.Service;
@@ -51,12 +52,15 @@ public class VendedorService {
     }
 
     // Deletar Vendedor
-    public void deletarVendedor(String cpf) {
-        Optional<Vendedor> vendedorExistente = vendedorRepository.findById(cpf);
-        if (!vendedorExistente.isPresent()) {
-            throw new RuntimeException("Vendedor com este CPF não existe.");
-        }
-        vendedorRepository.deleteById(cpf);
+    public Vendedor inativarVendedor(String cpf) {
+        validarCpf(cpf);
+        Vendedor vendedor = vendedorRepository.findById(cpf)
+                .orElseThrow(() -> new IllegalArgumentException("Vendedor com este CPF não existe."));
+        vendedor.setStatus(false); // Definindo o status como inativo
+        return vendedorRepository.save(vendedor);
+    }
+
+    private void validarCpf(String cpf) {
     }
 
     // Método para validar dados do vendedor
@@ -75,9 +79,6 @@ public class VendedorService {
         }
         if (vendedor.getTelefone() == null || vendedor.getTelefone().isEmpty()) {
             throw new RuntimeException("Telefone do vendedor é obrigatório.");
-        }
-        if (vendedor.getDescricaoDaLoja() == null || vendedor.getDescricaoDaLoja().isEmpty()) {
-            throw new RuntimeException("Descrição da loja é obrigatória.");
         }
     }
 

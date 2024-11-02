@@ -1,6 +1,8 @@
 package br.com.babapet.controller;
 
 import br.com.babapet.models.Pet.Pet;
+import br.com.babapet.models.Pet.PetRequest;
+import br.com.babapet.models.Pet.PetResponse;
 import br.com.babapet.repositories.PetRepository;
 import br.com.babapet.services.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,46 +21,39 @@ public class PetController {
 
     // Criar um novo pet
     @PostMapping
-    public ResponseEntity<Pet> criarPet(@RequestBody Pet pet) {
-        Pet novoPet = petService.criarPet(pet);
-        return ResponseEntity.ok(novoPet);
+    public ResponseEntity<PetResponse> criarPet(@RequestBody PetRequest pet) {
+        Pet novoPet = petService.criarPet(pet.toPet());
+        return ResponseEntity.ok(new PetResponse(novoPet));
     }
-
     // Listar todos os pets
     @GetMapping
-    public ResponseEntity<List<Pet>> listarPets() {
+    public ResponseEntity<List<PetResponse>> listarPets() {
         List<Pet> pets = petService.listarPets();
-        return ResponseEntity.ok(pets);
+        List<PetResponse> petsResponse = pets.stream().map(PetResponse::new).toList();
+        return ResponseEntity.ok(petsResponse);
     }
 
     // Buscar um pet por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Pet> buscarPet(@PathVariable Long id) {
+    public ResponseEntity<PetResponse> buscarPet(@PathVariable Long id) {
         Optional<Pet> pet = petService.buscarPetPorId(id);
-        return pet.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return pet.map(value -> ResponseEntity.ok(new PetResponse(value))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Atualizar um pet
     @PutMapping("/{id}")
-    public ResponseEntity<Pet> atualizarPet(@PathVariable Long id, @RequestBody Pet petAtualizado) {
+    public ResponseEntity<PetResponse> atualizarPet(@PathVariable Long id, @RequestBody PetRequest petAtualizado) {
         if (!petService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
-        petAtualizado.setId(id); // Garante que o ID do pet atualizado é o mesmo
-        Pet petSalvo = petService.atualizarPet(id, petAtualizado);
-        return ResponseEntity.ok(petSalvo);
+        Pet petSalvo = petService.atualizarPet(id, petAtualizado.toPet());
+        return ResponseEntity.ok(new PetResponse(petSalvo));
     }
 
     // Inativar um pet (definir raca como "indefinido")
     @PatchMapping("/{id}/inativar")
-    public ResponseEntity<Pet> inativarPet(@PathVariable Long id) {
+    public ResponseEntity<PetResponse> inativarPet(@PathVariable Long id) {
         Optional<Pet> petExistente = petService.buscarPetPorId(id);
-        if (!petExistente.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        Pet pet = petExistente.get();
-        pet.setRaca("indefinido"); //
-        petService.atualizarPet(id, pet);
-        return ResponseEntity.ok(pet);
+        return petExistente.map(pet -> ResponseEntity.ok(new PetResponse(pet))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

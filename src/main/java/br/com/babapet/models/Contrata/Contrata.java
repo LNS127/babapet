@@ -15,7 +15,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class Contrata {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

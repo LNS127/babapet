@@ -27,7 +27,7 @@ public class PetService {
     // Buscar Pet por ID
     public Optional<Pet> buscarPetPorId(Long id) {
         Optional<Pet> pet = petRepository.findById(id);
-        if (!pet.isPresent()) {
+        if (pet.isEmpty()) {
             throw new RuntimeException("Pet não encontrado.");
         }
         return pet;
@@ -42,7 +42,7 @@ public class PetService {
     // Atualizar Pet
     public Pet atualizarPet(Long id, Pet petAtualizado) {
         Optional<Pet> petExistente = petRepository.findById(id);
-        if (!petExistente.isPresent()) {
+        if (petExistente.isEmpty()) {
             throw new RuntimeException("Pet com este ID não encontrado.");
         }
         validarDadosPet(petAtualizado); // Validação adicional dos dados
@@ -53,7 +53,7 @@ public class PetService {
     // Deletar Pet
     public void deletarPet(Long id) {
         Optional<Pet> petExistente = petRepository.findById(id);
-        if (!petExistente.isPresent()) {
+        if (petExistente.isEmpty()) {
             throw new RuntimeException("Pet com este ID não existe.");
         }
         petRepository.deleteById(id);

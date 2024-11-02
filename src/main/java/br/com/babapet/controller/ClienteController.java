@@ -50,14 +50,8 @@ public class ClienteController {
     public ResponseEntity<ClienteResponse> atualizarCliente(
             @PathVariable String cpf,
             @RequestBody ClienteRequest clienteRequest) {
-
-        if (!clienteService.existsByCpf(cpf)) {
-            return ResponseEntity.notFound().build();
-        }
         Cliente clienteAtualizado = clienteRequest.toCliente();
-        clienteAtualizado.setCpf(cpf);
         Cliente clienteSalvo = clienteService.atualizarCliente(clienteAtualizado);
-
         return ResponseEntity.ok(new ClienteResponse(clienteSalvo));
     }
 
